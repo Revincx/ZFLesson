@@ -14,7 +14,7 @@ print('')
 
 
 try:
-    config = yaml.load(open('config.yml'), Loader=yaml.BaseLoader)
+    config = yaml.load(open('config.yml', 'rb'), Loader=yaml.BaseLoader)
 except FileNotFoundError:
     print('[!]配置文件不存在！')
     print('[!]请将config.example.yml重命名为config.yml并正确填写相关配置！')
