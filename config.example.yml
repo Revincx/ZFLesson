@@ -1,0 +1,30 @@
+# 学号
+username: 
+# 密码
+password: 
+
+# 教务系统网址
+urls:
+  - https://xxx.xxx.edu.cn
+  - http://172.18.xxx.xxx
+
+
+# 要选课程的课程号或课程名称
+# 知道课程号的话，更建议使用课程号，使用课程名称不一定能准确搜索到结果
+lessons:
+  - 2021AAAA
+  - 2021BBBB
+
+# 下面的参数如果不知道什么意思不要修改，留空即可
+
+# 年级代码
+njdm_id: 
+
+# 专业号
+zyh_id: 
+
+# 循环等待时间
+wait_time: 
+
+# 单课程的线程数量
+thread_num: 
