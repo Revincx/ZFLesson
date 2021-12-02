@@ -23,7 +23,7 @@ class Fetcher():
 
     def __init__(self, instance: Loginer, lesson_id: str, config):
         self.lesson_id = lesson_id
-
+        self.instance = instance
         self.sessions = instance.sessions
         self.url = instance.url
         self.cookie = instance.cookie
@@ -226,10 +226,10 @@ class Fetcher():
                 try:
                     response = requests.post(url, data=self.rob_data,
                                              headers=self.header_2, timeout=5)
-                    if len(response.text) > 10000:
+                    if len(response.text) > 10000 or response.status_code > 300:
                         with open('relogin.txt', 'a') as logger:
                             logger.write(logtime()+' relogin\n')
-                        self.login_us()
+                        self.instance.login()
                     print('[*]'+logtime()+' Thread-'+no+'  请求成功')
                     if response.json()['flag'] != '1':
                         #print('[*]'+logtime()+' Thread-'+no+'  异常!')
