@@ -27,8 +27,8 @@ class Fetcher():
         self.sessions = instance.sessions
         self.url = instance.url
         self.cookie = instance.cookie
-
         self.user = config['username']
+        self.config = config
 
         if(config['njdm_id'] is None or len(config['njdm_id']) == 0):
             self.njdm_id = self.user[:4]
@@ -238,7 +238,7 @@ class Fetcher():
                         #print('[*]'+logtime()+' Thread-'+no+'  异常!')
                         print('[*]'+logtime()+' 异常状态码: ' +
                               response.json()['msg'])
-                        raise Exception
+                        raise Exception(response.json()['msg'])
                     print('[*]'+logtime()+' Thread-'+no+'  Success!')
                     print('[*]'+logtime()+' '+self.kcmc+'  抢课成功!')
                     print('[+]'+logtime()+' 程序即将退出...')
@@ -246,8 +246,19 @@ class Fetcher():
                     current_try += 1
                 except KeyboardInterrupt:
                     _exit(-1)
-                except:
+                except Exception as e:
                     print('[*]'+logtime()+' Thread-'+no+'  Fail')
+                    if str(e.args[0]).find('冲突') != -1:
+                        print('[+]'+logtime()+' 本线程即将退出...')
+                        THREAD_FLAG = False
+                    if str(e.args[0]).split(',')[0] == '0':
+                        if self.config['retry'] == 'true':
+                            print('[!]'+logtime()+' 课程人数已满，正在重试...')
+                            THREAD_FLAG = True
+                            time.sleep(0.5)
+                        else:
+                            print('[!]'+logtime()+' 课程人数已满，线程即将退出...')
+                            THREAD_FLAG = False
             else:
                 print('[+]'+logtime()+' Thread-'+no+' Close')
                 return
