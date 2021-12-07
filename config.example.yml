@@ -3,7 +3,7 @@ username:
 # 密码
 password: 
 
-# 教务系统网址
+# 教务系统网址，可以填多个
 urls:
   - https://xxx.xxx.edu.cn
   - http://172.18.xxx.xxx
@@ -20,9 +20,6 @@ lessons:
 retry: false
 
 # 下面的参数如果不知道什么意思不要修改，留空即可
-
-# 年级代码
-njdm_id: 
 
 # 专业号
 zyh_id: 

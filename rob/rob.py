@@ -30,13 +30,6 @@ class Fetcher():
         self.user = config['username']
         self.config = config
 
-        if(config['njdm_id'] is None or len(config['njdm_id']) == 0):
-            self.njdm_id = self.user[:4]
-            self.bh_id = self.user[2:4] + self.user[4:10]
-        else:
-            self.njdm_id = config['njdm_id']
-            self.bh_id = config['njdm_id'][2:4] + self.user[4:10]
-
         if(config['zyh_id'] is None or len(config['zyh_id']) == 0):
             self.zyh_id = self.user[4:8]
         else:
@@ -83,8 +76,11 @@ class Fetcher():
             return -1
             # _exit(-1)
         try:
-            xkkz = re.findall("onclick=\"queryCourse\(this,'10','([0-9A-F]{32})','([0-9]{4})','([0-9]{4})'\)\" role=\"tab\" data-toggle=\"tab\">通识选修课",
-                              response.text)[0][0]
+            xkkz_match = re.findall("onclick=\"queryCourse\(this,'10','([0-9A-F]{32})','([0-9]{4})','([0-9]{4})'\)\" role=\"tab\" data-toggle=\"tab\">通识选修课",
+                              response.text)[0]
+            self.njdm_id = xkkz_match[1]
+            self.bh_id = xkkz_match[1][2:] + self.user[4:8]
+            xkkz = xkkz_match[0]
         except:
             text = BeautifulSoup(response.text, "html.parser")
             xkkz = text.findAll(name='input',
@@ -182,9 +178,7 @@ class Fetcher():
 
         doJxbResponse = requests.post(
             url=preChooseUrl, data=doJxbReqData, headers=self.header_2)
-        # print(doJxbResponse.content)
         doJxbData = json.loads(doJxbResponse.text)
-        # print(doJxbData)
 
         self.rob_data = {
             'cxbj': '0',
