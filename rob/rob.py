@@ -66,7 +66,7 @@ class Fetcher():
         }
 
     def lessons_info(self):
-        
+
         print('[+]'+logtime()+' 尝试获取课程信息...')
         # try:
         index_url = self.url + \
@@ -79,7 +79,7 @@ class Fetcher():
             '/jwglxt/xsxk/zzxkyzb_xkBcZyZzxkYzb.html?gnmkdm=N253512&su='+self.user
         response = self.sessions.get(index_url, headers=self.header_1)
         if "当前不属于选课阶段" in response.text:
-            print('[!]'+logtime()+' 未到选课时间，等待 %d 秒后重试...'%(self.wait_time))
+            print('[!]'+logtime()+' 未到选课时间，等待 %d 秒后重试...' % (self.wait_time))
             return -1
             # _exit(-1)
         try:
@@ -131,6 +131,9 @@ class Fetcher():
                                       headers=self.header_2).json()
         # 输出搜索结果
         # print(search_result)
+        if len(search_result['tmpList']) == 0:
+            print('[!]'+ logtime() + ' 没有找到课程 ' + self.lesson_id + ' !')
+            _exit(-1)
         kch = search_result['tmpList'][0]['kch_id']
         jxb = search_result['tmpList'][0]['jxb_id']
         kcmc = search_result['tmpList'][0]['kcmc']
